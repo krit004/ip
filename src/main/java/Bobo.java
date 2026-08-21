@@ -17,10 +17,37 @@ public class Bobo {
         
         while (!text.equals("bye")) {   
             if (text.equals("list")) {
-                System.out.println(lst);
+                for (int i = 0; i < lst.size(); i++) {
+                    System.out.println(lst.get(i));
+                }
+
+            }
+            else if (text.length() > 6 && (text.substring(0, 6).equals("unmark"))) {
+                char lastChar = text.charAt(text.length() - 1);
+                int number = Character.getNumericValue(lastChar); 
+                String goo = lst.get(number - 1);
+                if (goo.contains("[X]")) {
+                    goo = goo.replace("[X]", "[]");
+                    lst.set(number - 1, goo);
+                    System.out.println("OK, I've marked this task as not done yet: " + lst.get(number - 1));
+                } else {
+                    System.out.println("Error: Task is already unmarked or invalid!");
+                }
+            }
+            else if (text.length() > 4 && (text.substring(0, 4).equals("mark"))) {
+                char lastChar = text.charAt(text.length() - 1);
+                int number = Character.getNumericValue(lastChar); 
+                String goo = lst.get(number - 1);
+                if (goo.contains("[]")) {
+                    goo = goo.replace("[]", "[X]");
+                    lst.set(number - 1, goo);
+                    System.out.println("Nice! I've marked this task as done: " + lst.get(number - 1));
+                } else {
+                    System.out.println("Error: Task is already marked or invalid!");
+                }
             }
             else {
-                lst.add(text);
+                lst.add((lst.size() + 1) + ". [] " + text);
                 System.out.println("added: " + text);
             }
             text = scanner.nextLine(); 
