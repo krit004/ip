@@ -1,7 +1,9 @@
 import java.util.Scanner;
+import java.util.ArrayList; 
 
 public class Bobo {
     public static void main(String[] args) {
+        ArrayList<String> lst = new ArrayList<>();
         Scanner scanner = new Scanner(System.in); 
 
         String banner = " ____        _                \n" +
@@ -14,8 +16,15 @@ public class Bobo {
         String text = scanner.nextLine(); 
         
         while (!text.equals("bye")) {   
-            System.out.println(text);
+            if (text.equals("list")) {
+                System.out.println(lst);
+            }
+            else {
+                lst.add(text);
+                System.out.println("added: " + text);
+            }
             text = scanner.nextLine(); 
+
         }
         
         // 4. Close the scanner to prevent memory leaks
