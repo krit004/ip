@@ -55,16 +55,33 @@ public class Bobo {
                 }
             } else if (text.startsWith("todo")) {
                 String description = text.length() > 4 ? text.substring(4).trim() : "";
-                Task task = new Todo(description);
-                lst.add(task);
-                System.out.println("     Got it. I've added this task:");
-                System.out.println("       " + task);
-                System.out.println("     Now you have " + lst.size() + " tasks in the list.");
+                if (description.isEmpty()) {
+                    System.out.println("OOPS!!! The description of a todo cannot be empty.");
+                    text = scanner.nextLine();
+                    continue;
+                }
+                else {
+                    Task task = new Todo(description);
+                    lst.add(task);
+                    System.out.println("     Got it. I've added this task:");
+                    System.out.println("       " + task);
+                    System.out.println("     Now you have " + lst.size() + " tasks in the list.");
+                }
             } else if (text.startsWith("deadline")) {
                 String content = text.length() > 8 ? text.substring(8).trim() : "";
                 String[] parts = content.split(" /by ", 2);
                 String description = parts[0];
                 String by = parts.length > 1 ? parts[1] : "";
+                if (description.isEmpty()) {
+                    System.out.println("OOPS!!! The description of a deadline cannot be empty.");
+                    text = scanner.nextLine();
+                    continue;
+                }
+                if (by.isEmpty()) {
+                    System.out.println("OOPS!!! The deadline of a deadline cannot be empty.");
+                    text = scanner.nextLine();
+                    continue;
+                }
                 Task task = new Deadline(description, by);
                 lst.add(task);
                 System.out.println("     Got it. I've added this task:");
@@ -81,6 +98,21 @@ public class Bobo {
                     String[] timeParts = parts[1].split(" /to ", 2);
                     from = timeParts[0];
                     to = timeParts.length > 1 ? timeParts[1] : "";
+                }
+                if (description.isEmpty()) {
+                    System.out.println("OOPS!!! The description of an event cannot be empty.");
+                    text = scanner.nextLine();
+                    continue;
+                }
+                if (from.isEmpty()) {
+                    System.out.println("OOPS!!! The from of an event cannot be empty.");
+                    text = scanner.nextLine();
+                    continue;
+                }
+                if (to.isEmpty()) {
+                    System.out.println("OOPS!!! The to of an event cannot be empty.");
+                    text = scanner.nextLine();
+                    continue;
                 }
                 Task task = new Event(description, from, to);
                 lst.add(task);
