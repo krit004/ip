@@ -120,17 +120,29 @@ public class Bobo {
                 System.out.println("       " + task);
                 System.out.println("     Now you have " + lst.size() + " tasks in the list.");
                 
+            } else if (text.startsWith("delete")) {
+                int number = Integer.parseInt(text.substring(6).trim());
+                if (number > 0 && number <= lst.size()) {
+                    Task task = lst.get(number - 1);
+                    lst.remove(number - 1);
+                    System.out.println("     Noted. I've removed this task:");
+                    System.out.println("       " + task);
+                    System.out.println("     Now you have " + lst.size() + " tasks in the list.");
+                } else {
+                    System.out.println("     I'm sorry, but the task number you provided is out of bounds.");
+                    text = scanner.nextLine();
+                }
             } else {
                 Task task = new Task(text);
                 lst.add(task);
                 System.out.println("     added: " + text);
             }
 
-            text = scanner.nextLine();
+        text = scanner.nextLine();
         }
-
         scanner.close();
         System.out.println("     Bye. Hope to see you again soon!");
-        
+    
     }
 }
+
