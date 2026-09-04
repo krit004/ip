@@ -1,3 +1,5 @@
+package bobo.exception;
+
 /**
  * Represents exceptions specific to the Bobo chatbot application.
  */
