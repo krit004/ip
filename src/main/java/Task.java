@@ -1,4 +1,4 @@
-public class Task {
+public class Task extends MemoryItem {
     protected String description;
     protected boolean isDone;
 
@@ -7,7 +7,7 @@ public class Task {
         this.description = description;
         this.isDone = false;
     }
-
+    
     public String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X
     }
@@ -26,6 +26,11 @@ public class Task {
 
     public boolean isDone() {
         return isDone;
+    }
+
+    @Override
+    public String toTextLine() {
+        return (isDone ? "1" : "0") + " | " + description;
     }
 
     @Override
