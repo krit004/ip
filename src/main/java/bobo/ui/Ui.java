@@ -12,6 +12,13 @@ import bobo.util.DateUtil;
  */
 public class Ui {
 
+    private static final String DIVIDER_LINE = "    ____________________________________________________________";
+    private static final String LOGO = " ____        _                \n"
+                                     + "| __ )  ___ | |__   ___   \n"
+                                     + "|  _ \\ / _ \\| '_ \\ / _ \\  \n"
+                                     + "| |_) | (_) | |_) | (_) | \n"
+                                     + "|____/ \\___/|_.__/ \\___/  \n";
+
     private final Scanner scanner;
 
     /**
@@ -37,12 +44,7 @@ public class Ui {
      * Prints the welcome banner and initial greetings.
      */
     public void showWelcome() {
-        String banner = " ____        _                \n"
-                      + "| __ )  ___ | |__   ___   \n"
-                      + "|  _ \\ / _ \\| '_ \\ / _ \\  \n"
-                      + "| |_) | (_) | |_) | (_) | \n"
-                      + "|____/ \\___/|_.__/ \\___/  \n";
-        System.out.println(banner);
+        System.out.println(LOGO);
         System.out.println("     Hello! I'm Bobo.");
         System.out.println("     What can I do for you?");
     }
@@ -51,7 +53,7 @@ public class Ui {
      * Prints a decorative divider line.
      */
     public void showLine() {
-        System.out.println("    ____________________________________________________________");
+        System.out.println(DIVIDER_LINE);
     }
 
     /**
