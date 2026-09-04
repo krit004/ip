@@ -1,6 +1,11 @@
+package bobo.ui;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
+import bobo.task.Task;
+import bobo.task.TaskList;
+import bobo.util.DateUtil;
 
 /**
  * Handles all user interactions, input reading, and console outputs for Bobo.

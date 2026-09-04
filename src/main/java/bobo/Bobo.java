@@ -1,3 +1,11 @@
+package bobo;
+
+import bobo.exception.BoboException;
+import bobo.parser.Parser;
+import bobo.storage.Storage;
+import bobo.task.TaskList;
+import bobo.ui.Ui;
+
 /**
  * Main class for the Bobo task chatbot application.
  * Orchestrates Ui, Storage, TaskList, and Parser components.
@@ -52,5 +60,3 @@ public class Bobo {
         new Bobo("store.txt").run();
     }
 }
-
-

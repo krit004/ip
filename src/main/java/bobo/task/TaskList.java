@@ -1,6 +1,9 @@
+package bobo.task;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import bobo.exception.BoboException;
 
 /**
  * Manages the list of tasks for the Bobo application.

@@ -1,5 +1,15 @@
+package bobo.task;
+
+/**
+ * Represents a Todo task.
+ */
 public class Todo extends Task {
 
+    /**
+     * Constructs a Todo task with description.
+     *
+     * @param description Task description.
+     */
     public Todo(String description) {
         super(description);
     }
