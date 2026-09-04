@@ -135,6 +135,12 @@ public class TaskList {
         return tasks.isEmpty();
     }
 
+    /**
+     * Validates if a 1-based index is within bounds of the task list.
+     *
+     * @param index 1-based index to validate.
+     * @throws BoboException If index is <= 0 or > list size.
+     */
     private void validateIndex(int index) throws BoboException {
         if (index <= 0 || index > tasks.size()) {
             throw new BoboException("Task number " + index + " is out of bounds!");

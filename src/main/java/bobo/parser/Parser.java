@@ -158,6 +158,14 @@ public class Parser {
         return false;
     }
 
+    /**
+     * Parses a string representation of a 1-based task index into an integer.
+     *
+     * @param input Raw index argument string.
+     * @param commandName Name of the command requesting the index.
+     * @return Parsed 1-based integer task index.
+     * @throws BoboException If input is empty or not a valid integer.
+     */
     private static int parseTaskIndex(String input, String commandName) throws BoboException {
         if (input.isEmpty()) {
             throw new BoboException("OOPS!!! Please specify a task number for " + commandName + ".");
