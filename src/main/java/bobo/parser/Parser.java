@@ -150,6 +150,16 @@ public class Parser {
             return false;
         }
 
+        if (trimmedText.startsWith("find")) {
+            String keyword = trimmedText.length() > 4 ? trimmedText.substring(4).trim() : "";
+            if (keyword.isEmpty()) {
+                throw new BoboException("OOPS!!! The search keyword for find cannot be empty.");
+            }
+            List<Task> matchingTasks = tasks.findTasks(keyword);
+            ui.showMatchingTasks(matchingTasks);
+            return false;
+        }
+
         // Fallback for generic item addition or unknown command
         Task task = new Todo(trimmedText);
         tasks.add(task);

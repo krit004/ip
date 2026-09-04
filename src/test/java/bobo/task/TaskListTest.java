@@ -54,4 +54,20 @@ public class TaskListTest {
         TaskList tasks = new TaskList();
         assertThrows(BoboException.class, () -> tasks.mark(0));
     }
+
+    @Test
+    public void testFindTasks() {
+        TaskList tasks = new TaskList();
+        Task todo1 = new Todo("read book");
+        Task todo2 = new Todo("write code");
+        Task todo3 = new Todo("return book to library");
+        tasks.add(todo1);
+        tasks.add(todo2);
+        tasks.add(todo3);
+
+        java.util.List<Task> found = tasks.findTasks("book");
+        assertEquals(2, found.size());
+        assertEquals(todo1, found.get(0));
+        assertEquals(todo3, found.get(1));
+    }
 }

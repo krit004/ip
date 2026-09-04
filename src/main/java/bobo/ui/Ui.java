@@ -154,6 +154,22 @@ public class Ui {
     }
 
     /**
+     * Displays tasks matching a search keyword.
+     *
+     * @param matchingTasks List of matching tasks to display.
+     */
+    public void showMatchingTasks(List<Task> matchingTasks) {
+        if (matchingTasks.isEmpty()) {
+            System.out.println("     No matching tasks found in your list.");
+            return;
+        }
+        System.out.println("     Here are the matching tasks in your list:");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            System.out.println("     " + (i + 1) + "." + matchingTasks.get(i));
+        }
+    }
+
+    /**
      * Displays farewell message when exiting Bobo.
      */
     public void showBye() {
