@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 public class Bobo {
@@ -226,6 +228,32 @@ public class Bobo {
                 } else {
                     System.out.println("     I'm sorry, but the task number you provided is out of bounds.");
                     text = scanner.nextLine();
+                }
+            } else if (text.startsWith("on ")) {
+                String dateStr = text.substring(3).trim();
+                LocalDate targetDate = DateUtil.parseDate(dateStr);
+                if (targetDate == null) {
+                    LocalDateTime dt = DateUtil.parseDateTime(dateStr);
+                    if (dt != null) {
+                        targetDate = dt.toLocalDate();
+                    }
+                }
+                if (targetDate == null) {
+                    System.out.println("     Please specify a valid date (e.g., yyyy-MM-dd or d/M/yyyy).");
+                } else {
+                    String formattedTarget = DateUtil.formatForDisplay(targetDate);
+                    System.out.println("     Here are the tasks occurring on " + formattedTarget + ":");
+                    int count = 0;
+                    for (int i = 0; i < lst.size(); i++) {
+                        Task task = lst.get(i);
+                        if (task.isOnDate(targetDate)) {
+                            count++;
+                            System.out.println("     " + count + "." + task);
+                        }
+                    }
+                    if (count == 0) {
+                        System.out.println("     No tasks found on this date.");
+                    }
                 }
             } else {
                 Task task = new Todo(text);
