@@ -17,6 +17,11 @@ public class Event extends Task {
     }
 
     @Override
+    public String toTextLine() {
+        return "E | " + super.toTextLine() + " | " + from + " | " + to;
+    }
+
+    @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
     }
