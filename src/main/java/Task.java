@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class Task extends MemoryItem {
     protected String description;
     protected boolean isDone;
@@ -26,6 +28,16 @@ public class Task extends MemoryItem {
 
     public boolean isDone() {
         return isDone;
+    }
+
+    /**
+     * Checks if this task occurs on the specified date.
+     *
+     * @param targetDate The date to check against.
+     * @return true if the task occurs on targetDate, false otherwise.
+     */
+    public boolean isOnDate(LocalDate targetDate) {
+        return false;
     }
 
     @Override
