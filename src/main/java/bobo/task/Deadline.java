@@ -2,6 +2,7 @@ package bobo.task;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 import bobo.util.DateUtil;
 
 /**
@@ -18,7 +19,7 @@ public class Deadline extends Task {
      * Attempts to parse the date/time into java.time objects.
      *
      * @param description Task description.
-     * @param by Deadline date/time string.
+     * @param by          Deadline date/time string.
      */
     public Deadline(String description, String by) {
         super(description);

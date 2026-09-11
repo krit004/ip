@@ -3,6 +3,7 @@ package bobo.ui;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
+
 import bobo.task.Task;
 import bobo.task.TaskList;
 import bobo.util.DateUtil;
@@ -14,10 +15,10 @@ public class Ui {
 
     private static final String DIVIDER_LINE = "    ____________________________________________________________";
     private static final String LOGO = " ____        _                \n"
-                                     + "| __ )  ___ | |__   ___   \n"
-                                     + "|  _ \\ / _ \\| '_ \\ / _ \\  \n"
-                                     + "| |_) | (_) | |_) | (_) | \n"
-                                     + "|____/ \\___/|_.__/ \\___/  \n";
+            + "| __ )  ___ | |__   ___   \n"
+            + "|  _ \\ / _ \\| '_ \\ / _ \\  \n"
+            + "| |_) | (_) | |_) | (_) | \n"
+            + "|____/ \\___/|_.__/ \\___/  \n";
 
     private final Scanner scanner;
 
@@ -84,7 +85,7 @@ public class Ui {
     /**
      * Displays confirmation after adding a task.
      *
-     * @param task The added task.
+     * @param task       The added task.
      * @param totalTasks Current total number of tasks.
      */
     public void showTaskAdded(Task task, int totalTasks) {
@@ -96,7 +97,7 @@ public class Ui {
     /**
      * Displays confirmation after deleting a task.
      *
-     * @param task The removed task.
+     * @param task       The removed task.
      * @param totalTasks Remaining total number of tasks.
      */
     public void showTaskRemoved(Task task, int totalTasks) {
@@ -108,7 +109,7 @@ public class Ui {
     /**
      * Displays confirmation after marking or unmarking a task.
      *
-     * @param task The modified task.
+     * @param task   The modified task.
      * @param isDone Status whether marked done or not done.
      */
     public void showTaskMarked(Task task, boolean isDone) {
@@ -140,7 +141,7 @@ public class Ui {
     /**
      * Displays tasks occurring on a specified date.
      *
-     * @param targetDate The date queried.
+     * @param targetDate    The date queried.
      * @param matchingTasks List of matching tasks.
      */
     public void showTasksOnDate(LocalDate targetDate, List<Task> matchingTasks) {
