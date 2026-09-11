@@ -15,6 +15,14 @@ public class Bobo {
     private final Storage storage;
     private final Ui ui;
     private TaskList tasks;
+    private boolean isExit = false;
+
+    /**
+     * Constructs a Bobo chatbot instance with default storage location.
+     */
+    public Bobo() {
+        this("store.txt");
+    }
 
     /**
      * Constructs a Bobo chatbot instance with storage at the given file path.
@@ -33,16 +41,52 @@ public class Bobo {
     }
 
     /**
-     * Runs the main interactive loop for Bobo.
+     * Generates a response string for the user input.
+     *
+     * @param input Raw user input command.
+     * @return Response message from Bobo.
+     */
+    public String getResponse(String input) {
+        ui.clearResponseBuffer();
+        try {
+            isExit = Parser.executeCommand(input, tasks, ui, storage);
+        } catch (BoboException e) {
+            ui.showError(e.getMessage());
+        }
+        return ui.getResponseBuffer();
+    }
+
+    /**
+     * Returns whether the last processed command was an exit command.
+     *
+     * @return True if command was 'bye', false otherwise.
+     */
+    public boolean isExit() {
+        return isExit;
+    }
+
+    /**
+     * Returns the welcome message for Bobo.
+     *
+     * @return Welcome greeting string.
+     */
+    public String getWelcomeMessage() {
+        ui.clearResponseBuffer();
+        ui.showWelcome();
+        return ui.getResponseBuffer();
+    }
+
+    /**
+     * Runs the main interactive CLI loop for Bobo.
      */
     public void run() {
         ui.showWelcome();
-        boolean isExit = false;
-        while (!isExit) {
+        boolean isExitCli = false;
+        while (!isExitCli) {
             try {
                 String fullCommand = ui.readCommand();
                 ui.showLine();
-                isExit = Parser.executeCommand(fullCommand, tasks, ui, storage);
+                isExitCli = Parser.executeCommand(fullCommand, tasks, ui, storage);
             } catch (BoboException e) {
                 ui.showError(e.getMessage());
             } finally {
@@ -52,7 +96,7 @@ public class Bobo {
     }
 
     /**
-     * Main entry point of the Bobo application.
+     * Main entry point of the Bobo CLI application.
      *
      * @param args Command-line arguments.
      */
