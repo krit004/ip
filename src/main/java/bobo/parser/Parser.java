@@ -3,6 +3,7 @@ package bobo.parser;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
 import bobo.exception.BoboException;
 import bobo.storage.Storage;
 import bobo.task.Deadline;
@@ -14,16 +15,17 @@ import bobo.ui.Ui;
 import bobo.util.DateUtil;
 
 /**
- * Parses user input commands and executes the corresponding actions on TaskList, Ui, and Storage.
+ * Parses user input commands and executes the corresponding actions on
+ * TaskList, Ui, and Storage.
  */
 public class Parser {
 
     /**
      * Executes the command given in the text input.
      *
-     * @param text Raw user input string.
-     * @param tasks TaskList instance to manipulate.
-     * @param ui Ui instance for output.
+     * @param text    Raw user input string.
+     * @param tasks   TaskList instance to manipulate.
+     * @param ui      Ui instance for output.
      * @param storage Storage instance for saving changes.
      * @return true if command is 'bye' (signals exit), false otherwise.
      * @throws BoboException If input command is invalid or parameters are missing.
@@ -171,7 +173,7 @@ public class Parser {
     /**
      * Parses a string representation of a 1-based task index into an integer.
      *
-     * @param input Raw index argument string.
+     * @param input       Raw index argument string.
      * @param commandName Name of the command requesting the index.
      * @return Parsed 1-based integer task index.
      * @throws BoboException If input is empty or not a valid integer.

@@ -2,6 +2,7 @@ package bobo.task;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 import bobo.util.DateUtil;
 
 /**
@@ -17,12 +18,13 @@ public class Event extends Task {
     protected LocalDate toDate;
 
     /**
-     * Constructs an Event task with description, start date/time, and end date/time.
+     * Constructs an Event task with description, start date/time, and end
+     * date/time.
      * Attempts to parse start and end strings into java.time objects.
      *
      * @param description Task description.
-     * @param from Start date/time string.
-     * @param to End date/time string.
+     * @param from        Start date/time string.
+     * @param to          End date/time string.
      */
     public Event(String description, String from, String to) {
         super(description);

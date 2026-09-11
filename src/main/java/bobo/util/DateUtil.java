@@ -20,18 +20,17 @@ public class DateUtil {
             DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"),
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"),
             DateTimeFormatter.ofPattern("yyyy/MM/dd HHmm"),
-            DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")
-    );
+            DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
 
     /** Formatter list for date-only inputs. */
     private static final List<DateTimeFormatter> DATE_FORMATTERS = Arrays.asList(
             DateTimeFormatter.ofPattern("yyyy-MM-dd"),
             DateTimeFormatter.ofPattern("d/M/yyyy"),
-            DateTimeFormatter.ofPattern("yyyy/MM/dd")
-    );
+            DateTimeFormatter.ofPattern("yyyy/MM/dd"));
 
     /** Formatter for displaying LocalDateTime to user. */
-    private static final DateTimeFormatter DISPLAY_DATETIME_FORMATTER = DateTimeFormatter.ofPattern("MMM d yyyy, h:mma");
+    private static final DateTimeFormatter DISPLAY_DATETIME_FORMATTER = DateTimeFormatter
+            .ofPattern("MMM d yyyy, h:mma");
 
     /** Formatter for displaying LocalDate to user. */
     private static final DateTimeFormatter DISPLAY_DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM d yyyy");
@@ -88,7 +87,8 @@ public class DateUtil {
      * Parses input string as either LocalDateTime or LocalDate.
      *
      * @param input Raw date/time string.
-     * @return LocalDateTime if time component is present, LocalDate if date only, or null if unparseable.
+     * @return LocalDateTime if time component is present, LocalDate if date only,
+     *         or null if unparseable.
      */
     public static Object parseDateTimeOrDate(String input) {
         LocalDateTime dateTime = parseDateTime(input);
@@ -103,7 +103,8 @@ public class DateUtil {
     }
 
     /**
-     * Formats a LocalDate or LocalDateTime object into a user-friendly display string.
+     * Formats a LocalDate or LocalDateTime object into a user-friendly display
+     * string.
      *
      * @param dateTimeOrDate LocalDate, LocalDateTime, or String object.
      * @return User-friendly formatted date/time string.
