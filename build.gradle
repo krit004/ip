@@ -3,11 +3,17 @@ plugins {
     id 'application'
     id 'com.gradleup.shadow' version '9.5.1'
     id 'checkstyle'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+javafx {
+    version = "17.0.7"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_25
-    targetCompatibility = JavaVersion.VERSION_25
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -38,7 +44,7 @@ test {
 }
 
 application {
-    mainClass = 'bobo.Bobo'
+    mainClass = 'bobo.Launcher'
 }
 
 jar {

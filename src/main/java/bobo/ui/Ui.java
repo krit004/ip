@@ -9,24 +9,43 @@ import bobo.task.TaskList;
 import bobo.util.DateUtil;
 
 /**
- * Handles all user interactions, input reading, and console outputs for Bobo.
+ * Handles all user interactions, input reading, and console/GUI outputs for Bobo.
  */
 public class Ui {
 
     private static final String DIVIDER_LINE = "    ____________________________________________________________";
-    private static final String LOGO = " ____        _                \n"
-            + "| __ )  ___ | |__   ___   \n"
-            + "|  _ \\ / _ \\| '_ \\ / _ \\  \n"
-            + "| |_) | (_) | |_) | (_) | \n"
-            + "|____/ \\___/|_.__/ \\___/  \n";
 
     private final Scanner scanner;
+    private final StringBuilder responseBuffer = new StringBuilder();
 
     /**
      * Constructs a Ui object initializing standard input scanner.
      */
     public Ui() {
         this.scanner = new Scanner(System.in);
+    }
+
+    private void output(String text) {
+        responseBuffer.append(text).append("\n");
+        System.out.println("     " + text);
+    }
+
+    /**
+     * Clears the current response buffer.
+     */
+    public void clearResponseBuffer() {
+        responseBuffer.setLength(0);
+    }
+
+    /**
+     * Returns the collected response buffer string and clears it.
+     *
+     * @return The formatted response string.
+     */
+    public String getResponseBuffer() {
+        String result = responseBuffer.toString().trim();
+        clearResponseBuffer();
+        return result;
     }
 
     /**
@@ -45,9 +64,8 @@ public class Ui {
      * Prints the welcome banner and initial greetings.
      */
     public void showWelcome() {
-        System.out.println(LOGO);
-        System.out.println("     Hello! I'm Bobo.");
-        System.out.println("     What can I do for you?");
+        output("Hello! I'm Bobo.");
+        output("What can I do for you?");
     }
 
     /**
@@ -61,7 +79,7 @@ public class Ui {
      * Displays a loading error message when file loading fails.
      */
     public void showLoadingError() {
-        System.out.println("     Error loading task data file. Starting with an empty task list.");
+        output("Error loading task data file. Starting with an empty task list.");
     }
 
     /**
@@ -70,7 +88,7 @@ public class Ui {
      * @param message The error message content.
      */
     public void showError(String message) {
-        System.out.println("     " + message);
+        output(message);
     }
 
     /**
@@ -79,7 +97,7 @@ public class Ui {
      * @param message Message to display.
      */
     public void showMessage(String message) {
-        System.out.println("     " + message);
+        output(message);
     }
 
     /**
@@ -89,9 +107,9 @@ public class Ui {
      * @param totalTasks Current total number of tasks.
      */
     public void showTaskAdded(Task task, int totalTasks) {
-        System.out.println("     Got it. I've added this task:");
-        System.out.println("       " + task);
-        System.out.println("     Now you have " + totalTasks + " tasks in the list.");
+        output("Got it. I've added this task:");
+        output("  " + task);
+        output("Now you have " + totalTasks + " tasks in the list.");
     }
 
     /**
@@ -101,9 +119,9 @@ public class Ui {
      * @param totalTasks Remaining total number of tasks.
      */
     public void showTaskRemoved(Task task, int totalTasks) {
-        System.out.println("     Noted. I've removed this task:");
-        System.out.println("       " + task);
-        System.out.println("     Now you have " + totalTasks + " tasks in the list.");
+        output("Noted. I've removed this task:");
+        output("  " + task);
+        output("Now you have " + totalTasks + " tasks in the list.");
     }
 
     /**
@@ -114,11 +132,11 @@ public class Ui {
      */
     public void showTaskMarked(Task task, boolean isDone) {
         if (isDone) {
-            System.out.println("     Nice! I've marked this task as done:");
+            output("Nice! I've marked this task as done:");
         } else {
-            System.out.println("     OK, I've marked this task as not done yet:");
+            output("OK, I've marked this task as not done yet:");
         }
-        System.out.println("       " + task);
+        output("  " + task);
     }
 
     /**
@@ -129,12 +147,12 @@ public class Ui {
     public void showTaskList(TaskList taskList) {
         List<Task> tasks = taskList.getTasks();
         if (tasks.isEmpty()) {
-            System.out.println("     Your task list is currently empty.");
+            output("Your task list is currently empty.");
             return;
         }
-        System.out.println("     Here are the tasks in your list:");
+        output("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
-            System.out.println("     " + (i + 1) + "." + tasks.get(i));
+            output((i + 1) + "." + tasks.get(i));
         }
     }
 
@@ -147,12 +165,12 @@ public class Ui {
     public void showTasksOnDate(LocalDate targetDate, List<Task> matchingTasks) {
         String formattedDate = DateUtil.formatForDisplay(targetDate);
         if (matchingTasks.isEmpty()) {
-            System.out.println("     No tasks found on " + formattedDate + ".");
+            output("No tasks found on " + formattedDate + ".");
             return;
         }
-        System.out.println("     Here are the tasks occurring on " + formattedDate + ":");
+        output("Here are the tasks occurring on " + formattedDate + ":");
         for (int i = 0; i < matchingTasks.size(); i++) {
-            System.out.println("     " + (i + 1) + "." + matchingTasks.get(i));
+            output((i + 1) + "." + matchingTasks.get(i));
         }
     }
 
@@ -163,12 +181,12 @@ public class Ui {
      */
     public void showMatchingTasks(List<Task> matchingTasks) {
         if (matchingTasks.isEmpty()) {
-            System.out.println("     No matching tasks found in your list.");
+            output("No matching tasks found in your list.");
             return;
         }
-        System.out.println("     Here are the matching tasks in your list:");
+        output("Here are the matching tasks in your list:");
         for (int i = 0; i < matchingTasks.size(); i++) {
-            System.out.println("     " + (i + 1) + "." + matchingTasks.get(i));
+            output((i + 1) + "." + matchingTasks.get(i));
         }
     }
 
@@ -176,7 +194,6 @@ public class Ui {
      * Displays farewell message when exiting Bobo.
      */
     public void showBye() {
-        System.out.println("     Bye. Hope to see you again soon!");
-        scanner.close();
+        output("Bye. Hope to see you again soon!");
     }
 }
