@@ -1,11 +1,6 @@
 package bobo.ui;
 
-import java.util.Collections;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,48 +12,59 @@ import javafx.scene.shape.Circle;
  */
 public class DialogBox extends HBox {
 
+    private enum DialogType {
+        USER,
+        BOBO_NORMAL,
+        BOBO_ERROR
+    }
+
     private final Label textLabel;
     private final ImageView displayPicture;
 
-    private DialogBox(String text, Image img, boolean isUser) {
+    private DialogBox(String text, Image img, DialogType dialogType) {
         textLabel = new Label(text);
         textLabel.setWrapText(true);
-        textLabel.setMaxWidth(300);
+        textLabel.setMaxWidth(310);
 
         displayPicture = new ImageView();
-        displayPicture.setFitWidth(40);
-        displayPicture.setFitHeight(40);
+        displayPicture.setFitWidth(36);
+        displayPicture.setFitHeight(36);
         displayPicture.setPreserveRatio(true);
 
         if (img != null && !img.isError()) {
             displayPicture.setImage(img);
-            Circle clip = new Circle(20, 20, 20);
+            Circle clip = new Circle(18, 18, 18);
             displayPicture.setClip(clip);
         }
 
         setSpacing(10);
+        setupStyle(dialogType);
+    }
 
-        if (isUser) {
-            textLabel.setStyle("-fx-background-color: #DCF8C6; -fx-background-radius: 10; "
-                    + "-fx-padding: 10; -fx-font-size: 13px;");
+    private void setupStyle(DialogType dialogType) {
+        if (dialogType == DialogType.USER) {
+            textLabel.setStyle("-fx-background-color: #007AFF; -fx-text-fill: #FFFFFF; "
+                    + "-fx-background-radius: 16px 16px 4px 16px; -fx-padding: 10px 14px; "
+                    + "-fx-font-size: 13px; -fx-font-family: 'Segoe UI', sans-serif;");
             setAlignment(Pos.TOP_RIGHT);
             getChildren().addAll(textLabel, displayPicture);
+        } else if (dialogType == DialogType.BOBO_ERROR) {
+            textLabel.setStyle("-fx-background-color: #FFF5F5; -fx-text-fill: #9B2C2C; "
+                    + "-fx-border-color: #FEB2B2; -fx-border-radius: 16px 16px 16px 4px; "
+                    + "-fx-background-radius: 16px 16px 16px 4px; -fx-padding: 10px 14px; "
+                    + "-fx-font-size: 13px; -fx-font-family: 'Segoe UI', sans-serif; "
+                    + "-fx-effect: dropshadow(three-pass-box, rgba(155,44,44,0.12), 6, 0, 0, 2);");
+            setAlignment(Pos.TOP_LEFT);
+            getChildren().addAll(displayPicture, textLabel);
         } else {
-            textLabel.setStyle("-fx-background-color: #E8E8E8; -fx-background-radius: 10; "
-                    + "-fx-padding: 10; -fx-font-size: 13px;");
+            textLabel.setStyle("-fx-background-color: #EBF8FF; -fx-text-fill: #1A202C; "
+                    + "-fx-border-color: #BAE6FD; -fx-border-radius: 16px 16px 16px 4px; "
+                    + "-fx-background-radius: 16px 16px 16px 4px; -fx-padding: 10px 14px; "
+                    + "-fx-font-size: 13px; -fx-font-family: 'Segoe UI', sans-serif; "
+                    + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 6, 0, 0, 2);");
             setAlignment(Pos.TOP_LEFT);
             getChildren().addAll(displayPicture, textLabel);
         }
-    }
-
-    /**
-     * Flips the dialog box such that the ImageView is on the left and text on the right.
-     */
-    private void flip() {
-        ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
-        Collections.reverse(tmp);
-        getChildren().setAll(tmp);
-        setAlignment(Pos.TOP_LEFT);
     }
 
     /**
@@ -69,18 +75,28 @@ public class DialogBox extends HBox {
      * @return User DialogBox instance.
      */
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img, true);
+        return new DialogBox(text, img, DialogType.USER);
     }
 
     /**
-     * Creates a Bobo dialog box with avatar on the left.
+     * Creates a normal Bobo dialog box with avatar on the left.
      *
      * @param text Message text.
      * @param img  Bobo avatar image.
      * @return Bobo DialogBox instance.
      */
     public static DialogBox getBoboDialog(String text, Image img) {
-        DialogBox db = new DialogBox(text, img, false);
-        return db;
+        return new DialogBox(text, img, DialogType.BOBO_NORMAL);
+    }
+
+    /**
+     * Creates an error Bobo dialog box with crimson highlight styling.
+     *
+     * @param text Error message text.
+     * @param img  Bobo avatar image.
+     * @return Bobo Error DialogBox instance.
+     */
+    public static DialogBox getBoboErrorDialog(String text, Image img) {
+        return new DialogBox(text, img, DialogType.BOBO_ERROR);
     }
 }
