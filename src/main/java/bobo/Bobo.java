@@ -79,7 +79,7 @@ public class Bobo {
      */
     public String getWelcomeMessage() {
         ui.clearResponseBuffer();
-        ui.showWelcome();
+        ui.showWelcome(tasks != null ? tasks.size() : 0);
         return ui.getResponseBuffer();
     }
 
@@ -87,7 +87,7 @@ public class Bobo {
      * Runs the main interactive CLI loop for Bobo.
      */
     public void run() {
-        ui.showWelcome();
+        ui.showWelcome(tasks != null ? tasks.size() : 0);
         boolean isExitCli = false;
         while (!isExitCli) {
             try {
