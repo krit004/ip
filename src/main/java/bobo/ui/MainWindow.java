@@ -110,6 +110,7 @@ public class MainWindow extends AnchorPane {
      * @param b Bobo instance.
      */
     public void setBobo(Bobo b) {
+        assert b != null : "Bobo instance passed to MainWindow must not be null";
         this.bobo = b;
         dialogContainer.getChildren().add(DialogBox.getBoboDialog(bobo.getWelcomeMessage(), boboImage));
     }
@@ -118,6 +119,7 @@ public class MainWindow extends AnchorPane {
      * Handles user input by displaying user and bot dialogs, and processing exit.
      */
     private void handleUserInput() {
+        assert bobo != null : "Bobo instance must be set before handling user input";
         String input = userInput.getText();
         if (input == null || input.trim().isEmpty()) {
             return;

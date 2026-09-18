@@ -173,6 +173,7 @@ public class Parser {
     private static void executeAddFallback(String trimmedText, TaskList tasks, Ui ui, Storage storage)
             throws BoboException {
         Task task = new Todo(trimmedText);
+        assert task != null : "Created Todo task must not be null";
         tasks.add(task);
         storage.save(tasks);
         ui.showMessage("added: " + trimmedText);
