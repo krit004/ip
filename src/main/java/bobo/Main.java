@@ -22,6 +22,8 @@ public class Main extends Application {
         stage.setTitle("Bobo Chatbot");
         stage.setMinWidth(400.0);
         stage.setMinHeight(600.0);
+        stage.setWidth(450.0);
+        stage.setHeight(650.0);
         stage.show();
     }
 }

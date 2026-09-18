@@ -59,42 +59,60 @@ public class MainWindow extends AnchorPane {
     }
 
     private void setupLayout(Image bgImage) {
-        setPrefSize(400.0, 600.0);
+        setPrefSize(450.0, 650.0);
+
+        if (bgImage != null && !bgImage.isError()) {
+            BackgroundImage bg = new BackgroundImage(
+                    bgImage,
+                    BackgroundRepeat.NO_REPEAT,
+                    BackgroundRepeat.NO_REPEAT,
+                    BackgroundPosition.CENTER,
+                    BackgroundSize.DEFAULT
+            );
+            setBackground(new Background(bg));
+        } else {
+            setStyle("-fx-background-color: #FAFAFA;");
+        }
 
         scrollPane.setContent(dialogContainer);
         scrollPane.setFitToWidth(true);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
 
-        dialogContainer.setSpacing(10);
-        dialogContainer.setStyle("-fx-padding: 10;");
-
-        if (bgImage != null && !bgImage.isError()) {
-            BackgroundImage bg = new BackgroundImage(bgImage, BackgroundRepeat.REPEAT,
-                    BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-            dialogContainer.setBackground(new Background(bg));
-        } else {
-            dialogContainer.setStyle("-fx-padding: 10; -fx-background-color: #FAFAFA;");
-        }
-
+        dialogContainer.setSpacing(12);
+        dialogContainer.setStyle("-fx-padding: 12; -fx-background-color: transparent;");
         dialogContainer.heightProperty().addListener((observable) -> scrollPane.setVvalue(1.0));
 
         AnchorPane.setTopAnchor(scrollPane, 0.0);
         AnchorPane.setLeftAnchor(scrollPane, 0.0);
         AnchorPane.setRightAnchor(scrollPane, 0.0);
-        AnchorPane.setBottomAnchor(scrollPane, 45.0);
+        AnchorPane.setBottomAnchor(scrollPane, 55.0);
 
-        userInput.setPrefHeight(40.0);
-        AnchorPane.setLeftAnchor(userInput, 5.0);
-        AnchorPane.setBottomAnchor(userInput, 5.0);
+        userInput.setPrefHeight(42.0);
+        userInput.setPromptText("Type a command (or 'help')...");
+        userInput.setStyle("-fx-background-radius: 20px; -fx-background-color: #FFFFFF; "
+                + "-fx-border-color: #CBD5E0; -fx-border-radius: 20px; -fx-padding: 8px 14px; "
+                + "-fx-font-size: 13px; -fx-font-family: 'Segoe UI', sans-serif;");
+        AnchorPane.setLeftAnchor(userInput, 10.0);
+        AnchorPane.setBottomAnchor(userInput, 8.0);
 
-        sendButton.setPrefHeight(40.0);
-        sendButton.setPrefWidth(70.0);
-        AnchorPane.setRightAnchor(sendButton, 5.0);
-        AnchorPane.setBottomAnchor(sendButton, 5.0);
+        sendButton.setPrefHeight(42.0);
+        sendButton.setPrefWidth(75.0);
+        sendButton.setStyle("-fx-background-radius: 20px; -fx-background-color: #007AFF; "
+                + "-fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-cursor: hand; "
+                + "-fx-font-size: 13px; -fx-font-family: 'Segoe UI', sans-serif;");
+        sendButton.setOnMouseEntered((e) -> sendButton.setStyle("-fx-background-radius: 20px; "
+                + "-fx-background-color: #0062CC; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; "
+                + "-fx-cursor: hand; -fx-font-size: 13px; -fx-font-family: 'Segoe UI', sans-serif;"));
+        sendButton.setOnMouseExited((e) -> sendButton.setStyle("-fx-background-radius: 20px; "
+                + "-fx-background-color: #007AFF; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; "
+                + "-fx-cursor: hand; -fx-font-size: 13px; -fx-font-family: 'Segoe UI', sans-serif;"));
 
-        // Bind userInput width dynamically
-        userInput.prefWidthProperty().bind(widthProperty().subtract(85.0));
+        AnchorPane.setRightAnchor(sendButton, 10.0);
+        AnchorPane.setBottomAnchor(sendButton, 8.0);
+
+        userInput.prefWidthProperty().bind(widthProperty().subtract(105.0));
 
         getChildren().addAll(scrollPane, userInput, sendButton);
     }
@@ -126,9 +144,16 @@ public class MainWindow extends AnchorPane {
         }
 
         String response = bobo.getResponse(input);
+        boolean isError = response.startsWith("OOPS!!!") || response.startsWith("Error:")
+                || response.startsWith("Please specify");
+
+        DialogBox boboDialog = isError
+                ? DialogBox.getBoboErrorDialog(response, boboImage)
+                : DialogBox.getBoboDialog(response, boboImage);
+
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getBoboDialog(response, boboImage)
+                boboDialog
         );
         userInput.clear();
 
