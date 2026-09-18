@@ -3,6 +3,7 @@ package bobo.task;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import bobo.exception.BoboException;
 
@@ -27,6 +28,7 @@ public class TaskList {
      */
     public TaskList(List<Task> tasks) {
         this.tasks = (tasks != null) ? new ArrayList<>(tasks) : new ArrayList<>();
+        assert this.tasks != null : "Internal tasks list must be initialized";
     }
 
     /**
@@ -35,6 +37,7 @@ public class TaskList {
      * @param task Task to be added.
      */
     public void add(Task task) {
+        assert task != null : "Cannot add a null task to TaskList";
         tasks.add(task);
     }
 
@@ -47,6 +50,7 @@ public class TaskList {
      */
     public Task delete(int index) throws BoboException {
         validateIndex(index);
+        assert index > 0 && index <= tasks.size() : "Task index must be within bounds after validation";
         return tasks.remove(index - 1);
     }
 
@@ -59,6 +63,7 @@ public class TaskList {
      */
     public Task mark(int index) throws BoboException {
         validateIndex(index);
+        assert index > 0 && index <= tasks.size() : "Task index must be within bounds after validation";
         Task task = tasks.get(index - 1);
         task.markAsDone();
         return task;
@@ -73,6 +78,7 @@ public class TaskList {
      */
     public Task unmark(int index) throws BoboException {
         validateIndex(index);
+        assert index > 0 && index <= tasks.size() : "Task index must be within bounds after validation";
         Task task = tasks.get(index - 1);
         task.markAsNotDone();
         return task;
@@ -87,6 +93,7 @@ public class TaskList {
      */
     public Task get(int index) throws BoboException {
         validateIndex(index);
+        assert index > 0 && index <= tasks.size() : "Task index must be within bounds after validation";
         return tasks.get(index - 1);
     }
 
@@ -97,16 +104,12 @@ public class TaskList {
      * @return List of tasks occurring on targetDate.
      */
     public List<Task> getTasksOnDate(LocalDate targetDate) {
-        List<Task> matchingTasks = new ArrayList<>();
         if (targetDate == null) {
-            return matchingTasks;
+            return new ArrayList<>();
         }
-        for (Task task : tasks) {
-            if (task.isOnDate(targetDate)) {
-                matchingTasks.add(task);
-            }
-        }
-        return matchingTasks;
+        return tasks.stream()
+                .filter(task -> task.isOnDate(targetDate))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -116,17 +119,13 @@ public class TaskList {
      * @return List of matching tasks.
      */
     public List<Task> findTasks(String keyword) {
-        List<Task> matchingTasks = new ArrayList<>();
         if (keyword == null || keyword.trim().isEmpty()) {
-            return matchingTasks;
+            return new ArrayList<>();
         }
         String lowerKeyword = keyword.trim().toLowerCase();
-        for (Task task : tasks) {
-            if (task.getDescription().toLowerCase().contains(lowerKeyword)) {
-                matchingTasks.add(task);
-            }
-        }
-        return matchingTasks;
+        return tasks.stream()
+                .filter(task -> task.getDescription().toLowerCase().contains(lowerKeyword))
+                .collect(Collectors.toList());
     }
 
     /**

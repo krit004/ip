@@ -1,13 +1,16 @@
 package bobo.storage;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import bobo.exception.BoboException;
 import bobo.task.Deadline;
@@ -29,6 +32,7 @@ public class Storage {
      * @param filePath Path to the storage file.
      */
     public Storage(String filePath) {
+        assert filePath != null && !filePath.trim().isEmpty() : "File path for storage cannot be null or empty";
         this.filePath = filePath;
     }
 
@@ -56,58 +60,61 @@ public class Storage {
      * @throws BoboException If a critical read error occurs.
      */
     public List<Task> load() throws BoboException {
-        List<Task> loadedList = new ArrayList<>();
         File file = new File(filePath);
         if (!file.exists()) {
             checkOrCreateFile();
-            return loadedList;
+            return new ArrayList<>();
         }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) {
-                    continue;
-                }
-
-                String[] pieces = line.split("\\|");
-                for (int i = 0; i < pieces.length; i++) {
-                    pieces[i] = pieces[i].trim();
-                }
-
-                String type = pieces[0];
-                boolean isDone = pieces.length > 1 && pieces[1].equals("1");
-
-                Task task = null;
-                if (type.equals("T")) {
-                    if (pieces.length > 2) {
-                        task = new Todo(pieces[2]);
-                    }
-                } else if (type.equals("D")) {
-                    if (pieces.length > 3) {
-                        task = new Deadline(pieces[2], pieces[3]);
-                    }
-                } else if (type.equals("E")) {
-                    if (pieces.length > 4) {
-                        task = new Event(pieces[2], pieces[3], pieces[4]);
-                    }
-                } else if (type.equals("Task")) {
-                    if (pieces.length > 2) {
-                        task = new Task(pieces[2]);
-                    }
-                }
-
-                if (task != null) {
-                    if (isDone) {
-                        task.markAsDone();
-                    }
-                    loadedList.add(task);
-                }
-            }
+        try (Stream<String> lines = Files.lines(Path.of(filePath))) {
+            List<Task> loadedList = lines
+                    .filter(line -> !line.trim().isEmpty())
+                    .map(this::parseTaskFromLine)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            assert loadedList != null : "Loaded task list must not be null";
+            return loadedList;
         } catch (IOException e) {
             throw new BoboException("Read error while loading file: " + e.getMessage());
         }
-        return loadedList;
+    }
+
+    private Task parseTaskFromLine(String line) {
+        if (line == null || line.trim().isEmpty()) {
+            return null;
+        }
+
+        String[] pieces = line.split("\\|");
+        for (int i = 0; i < pieces.length; i++) {
+            pieces[i] = pieces[i].trim();
+        }
+
+        String type = pieces[0];
+        boolean isDone = pieces.length > 1 && pieces[1].equals("1");
+
+        Task task = null;
+        if (type.equals("T")) {
+            if (pieces.length > 2) {
+                task = new Todo(pieces[2]);
+            }
+        } else if (type.equals("D")) {
+            if (pieces.length > 3) {
+                task = new Deadline(pieces[2], pieces[3]);
+            }
+        } else if (type.equals("E")) {
+            if (pieces.length > 4) {
+                task = new Event(pieces[2], pieces[3], pieces[4]);
+            }
+        } else if (type.equals("Task")) {
+            if (pieces.length > 2) {
+                task = new Task(pieces[2]);
+            }
+        }
+
+        if (task != null && isDone) {
+            task.markAsDone();
+        }
+        return task;
     }
 
     /**
@@ -117,6 +124,8 @@ public class Storage {
      * @throws BoboException If a write error occurs.
      */
     public void save(TaskList taskList) throws BoboException {
+        assert taskList != null : "TaskList passed to save cannot be null";
+        assert filePath != null && !filePath.trim().isEmpty() : "File path for storage cannot be null or empty";
         checkOrCreateFile();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Task task : taskList.getTasks()) {

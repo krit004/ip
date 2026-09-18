@@ -3,6 +3,7 @@ package bobo.ui;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 import bobo.task.Task;
 import bobo.task.TaskList;
@@ -145,15 +146,7 @@ public class Ui {
      * @param taskList The TaskList instance to display.
      */
     public void showTaskList(TaskList taskList) {
-        List<Task> tasks = taskList.getTasks();
-        if (tasks.isEmpty()) {
-            output("Your task list is currently empty.");
-            return;
-        }
-        output("Here are the tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
-            output((i + 1) + "." + tasks.get(i));
-        }
+        printTaskList(taskList.getTasks(), "Here are the tasks in your list:", "Your task list is currently empty.");
     }
 
     /**
@@ -164,14 +157,8 @@ public class Ui {
      */
     public void showTasksOnDate(LocalDate targetDate, List<Task> matchingTasks) {
         String formattedDate = DateUtil.formatForDisplay(targetDate);
-        if (matchingTasks.isEmpty()) {
-            output("No tasks found on " + formattedDate + ".");
-            return;
-        }
-        output("Here are the tasks occurring on " + formattedDate + ":");
-        for (int i = 0; i < matchingTasks.size(); i++) {
-            output((i + 1) + "." + matchingTasks.get(i));
-        }
+        printTaskList(matchingTasks, "Here are the tasks occurring on " + formattedDate + ":",
+                "No tasks found on " + formattedDate + ".");
     }
 
     /**
@@ -180,14 +167,18 @@ public class Ui {
      * @param matchingTasks List of matching tasks to display.
      */
     public void showMatchingTasks(List<Task> matchingTasks) {
-        if (matchingTasks.isEmpty()) {
-            output("No matching tasks found in your list.");
+        printTaskList(matchingTasks, "Here are the matching tasks in your list:",
+                "No matching tasks found in your list.");
+    }
+
+    private void printTaskList(List<Task> tasks, String headerMessage, String emptyMessage) {
+        if (tasks.isEmpty()) {
+            output(emptyMessage);
             return;
         }
-        output("Here are the matching tasks in your list:");
-        for (int i = 0; i < matchingTasks.size(); i++) {
-            output((i + 1) + "." + matchingTasks.get(i));
-        }
+        output(headerMessage);
+        IntStream.range(0, tasks.size())
+                .forEach(i -> output((i + 1) + "." + tasks.get(i)));
     }
 
     /**
