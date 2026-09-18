@@ -44,6 +44,8 @@ public class Parser {
         if (trimmedText.equals("bye")) {
             ui.showBye();
             return true;
+        } else if (trimmedText.equals("help")) {
+            ui.showHelp();
         } else if (trimmedText.equals("list")) {
             ui.showTaskList(tasks);
         } else if (trimmedText.startsWith("unmark")) {

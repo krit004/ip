@@ -187,4 +187,54 @@ public class Ui {
     public void showBye() {
         output("Bye. Hope to see you again soon!");
     }
+
+    /**
+     * Displays guidance on available commands, syntax formats, examples, and exit command.
+     */
+    public void showHelp() {
+        output("Available commands and usage:");
+        output("");
+        output("1. list");
+        output("   Format: list");
+        output("   Example: list");
+        output("");
+        output("2. todo");
+        output("   Format: todo <description>");
+        output("   Example: todo read book");
+        output("");
+        output("3. deadline");
+        output("   Format: deadline <description> /by <date>");
+        output("   Example: deadline submit essay /by 2026-09-30");
+        output("");
+        output("4. event");
+        output("   Format: event <description> /from <start> /to <end>");
+        output("   Example: event meeting /from 2026-09-30 14:00 /to 2026-09-30 16:00");
+        output("");
+        output("5. mark");
+        output("   Format: mark <task_number>");
+        output("   Example: mark 2");
+        output("");
+        output("6. unmark");
+        output("   Format: unmark <task_number>");
+        output("   Example: unmark 2");
+        output("");
+        output("7. delete");
+        output("   Format: delete <task_number>");
+        output("   Example: delete 1");
+        output("");
+        output("8. find");
+        output("   Format: find <keyword>");
+        output("   Example: find book");
+        output("");
+        output("9. on");
+        output("   Format: on <date>");
+        output("   Example: on 2026-09-30");
+        output("");
+        output("10. help");
+        output("    Format: help");
+        output("    Example: help");
+        output("");
+        output("To exit the application:");
+        output("   Type 'bye'");
+    }
 }
