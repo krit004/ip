@@ -2,6 +2,7 @@ package bobo.ui;
 
 import bobo.Bobo;
 import javafx.application.Platform;
+import javafx.geometry.Side;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -62,12 +63,19 @@ public class MainWindow extends AnchorPane {
         setPrefSize(450.0, 650.0);
 
         if (bgImage != null && !bgImage.isError()) {
+            BackgroundSize bgSize = new BackgroundSize(
+                    BackgroundSize.AUTO, 1.0, false, true, false, false
+            );
+            BackgroundPosition bgPos = new BackgroundPosition(
+                    Side.RIGHT, 0, false,
+                    Side.TOP, 0, false
+            );
             BackgroundImage bg = new BackgroundImage(
                     bgImage,
                     BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT,
-                    BackgroundPosition.CENTER,
-                    BackgroundSize.DEFAULT
+                    bgPos,
+                    bgSize
             );
             setBackground(new Background(bg));
         } else {

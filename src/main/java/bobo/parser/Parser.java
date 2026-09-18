@@ -65,7 +65,8 @@ public class Parser {
         } else if (trimmedText.startsWith("find")) {
             executeFind(trimmedText, tasks, ui);
         } else {
-            executeAddFallback(trimmedText, tasks, ui, storage);
+            throw new BoboException("OOPS!!! I'm sorry, but I don't know what that means :-(\n"
+                    + "Type 'help' to see available commands.");
         }
 
         return false;
@@ -170,15 +171,6 @@ public class Parser {
         List<Task> matchingTasks = tasks.findTasks(keyword);
         assert matchingTasks != null : "Matching tasks list must not be null";
         ui.showMatchingTasks(matchingTasks);
-    }
-
-    private static void executeAddFallback(String trimmedText, TaskList tasks, Ui ui, Storage storage)
-            throws BoboException {
-        Task task = new Todo(trimmedText);
-        assert task != null : "Created Todo task must not be null";
-        tasks.add(task);
-        storage.save(tasks);
-        ui.showTaskAdded(task, tasks.size());
     }
 
     private static void addAndSaveTask(Task task, TaskList tasks, Ui ui, Storage storage) throws BoboException {

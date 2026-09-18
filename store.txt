@@ -1,0 +1,6 @@
+T | 0 | goo
+D | 0 | submit essay | 2026-09-30 14:00\
+T | 0 | goo
+T | 0 | read book
+D | 0 | submit essay | 2026-09-30
+E | 0 | meeting | 2026-09-30 1400 | 2026-09-30 1600
