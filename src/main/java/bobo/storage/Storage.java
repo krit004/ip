@@ -29,6 +29,7 @@ public class Storage {
      * @param filePath Path to the storage file.
      */
     public Storage(String filePath) {
+        assert filePath != null && !filePath.trim().isEmpty() : "File path for storage cannot be null or empty";
         this.filePath = filePath;
     }
 
@@ -60,6 +61,7 @@ public class Storage {
         File file = new File(filePath);
         if (!file.exists()) {
             checkOrCreateFile();
+            assert loadedList != null : "Loaded task list must not be null";
             return loadedList;
         }
 
@@ -107,6 +109,7 @@ public class Storage {
         } catch (IOException e) {
             throw new BoboException("Read error while loading file: " + e.getMessage());
         }
+        assert loadedList != null : "Loaded task list must not be null";
         return loadedList;
     }
 
@@ -117,6 +120,8 @@ public class Storage {
      * @throws BoboException If a write error occurs.
      */
     public void save(TaskList taskList) throws BoboException {
+        assert taskList != null : "TaskList passed to save cannot be null";
+        assert filePath != null && !filePath.trim().isEmpty() : "File path for storage cannot be null or empty";
         checkOrCreateFile();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Task task : taskList.getTasks()) {

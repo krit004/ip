@@ -30,6 +30,7 @@ public class Bobo {
      * @param filePath Path to the storage text file.
      */
     public Bobo(String filePath) {
+        assert filePath != null && !filePath.trim().isEmpty() : "Storage file path must not be null or empty";
         ui = new Ui();
         storage = new Storage(filePath);
         try {
@@ -38,6 +39,9 @@ public class Bobo {
             ui.showLoadingError();
             tasks = new TaskList();
         }
+        assert ui != null : "Ui subsystem must be initialized";
+        assert storage != null : "Storage subsystem must be initialized";
+        assert tasks != null : "TaskList subsystem must be initialized";
     }
 
     /**
@@ -47,6 +51,9 @@ public class Bobo {
      * @return Response message from Bobo.
      */
     public String getResponse(String input) {
+        assert tasks != null : "TaskList should be initialized before processing responses";
+        assert ui != null : "Ui should be initialized before processing responses";
+        assert storage != null : "Storage should be initialized before processing responses";
         ui.clearResponseBuffer();
         try {
             isExit = Parser.executeCommand(input, tasks, ui, storage);

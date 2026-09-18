@@ -31,6 +31,10 @@ public class Parser {
      * @throws BoboException If input command is invalid or parameters are missing.
      */
     public static boolean executeCommand(String text, TaskList tasks, Ui ui, Storage storage) throws BoboException {
+        assert tasks != null : "TaskList instance passed to Parser cannot be null";
+        assert ui != null : "Ui instance passed to Parser cannot be null";
+        assert storage != null : "Storage instance passed to Parser cannot be null";
+
         if (text == null || text.trim().isEmpty()) {
             return false;
         }
@@ -51,6 +55,7 @@ public class Parser {
             String arg = trimmedText.substring(6).trim();
             int number = parseTaskIndex(arg, "unmark");
             Task task = tasks.unmark(number);
+            assert task != null : "Unmarked task must not be null";
             storage.save(tasks);
             ui.showTaskMarked(task, false);
             return false;
@@ -60,6 +65,7 @@ public class Parser {
             String arg = trimmedText.substring(4).trim();
             int number = parseTaskIndex(arg, "mark");
             Task task = tasks.mark(number);
+            assert task != null : "Marked task must not be null";
             storage.save(tasks);
             ui.showTaskMarked(task, true);
             return false;
@@ -71,6 +77,7 @@ public class Parser {
                 throw new BoboException("OOPS!!! The description of a todo cannot be empty.");
             }
             Task task = new Todo(description);
+            assert task != null : "Created Todo task must not be null";
             tasks.add(task);
             storage.save(tasks);
             ui.showTaskAdded(task, tasks.size());
@@ -91,6 +98,7 @@ public class Parser {
             }
 
             Task task = new Deadline(description, by);
+            assert task != null : "Created Deadline task must not be null";
             tasks.add(task);
             storage.save(tasks);
             ui.showTaskAdded(task, tasks.size());
@@ -120,6 +128,7 @@ public class Parser {
             }
 
             Task task = new Event(description, from, to);
+            assert task != null : "Created Event task must not be null";
             tasks.add(task);
             storage.save(tasks);
             ui.showTaskAdded(task, tasks.size());
@@ -130,6 +139,7 @@ public class Parser {
             String arg = trimmedText.substring(6).trim();
             int number = parseTaskIndex(arg, "delete");
             Task task = tasks.delete(number);
+            assert task != null : "Deleted task must not be null";
             storage.save(tasks);
             ui.showTaskRemoved(task, tasks.size());
             return false;
@@ -148,6 +158,7 @@ public class Parser {
                 throw new BoboException("Please specify a valid date (e.g., yyyy-MM-dd or d/M/yyyy).");
             }
             List<Task> matchingTasks = tasks.getTasksOnDate(targetDate);
+            assert matchingTasks != null : "Matching tasks list must not be null";
             ui.showTasksOnDate(targetDate, matchingTasks);
             return false;
         }
@@ -158,12 +169,14 @@ public class Parser {
                 throw new BoboException("OOPS!!! The search keyword for find cannot be empty.");
             }
             List<Task> matchingTasks = tasks.findTasks(keyword);
+            assert matchingTasks != null : "Matching tasks list must not be null";
             ui.showMatchingTasks(matchingTasks);
             return false;
         }
 
         // Fallback for generic item addition or unknown command
         Task task = new Todo(trimmedText);
+        assert task != null : "Created Todo task must not be null";
         tasks.add(task);
         storage.save(tasks);
         ui.showMessage("added: " + trimmedText);
