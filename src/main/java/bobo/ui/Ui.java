@@ -62,11 +62,20 @@ public class Ui {
     }
 
     /**
-     * Prints the welcome banner and initial greetings.
+     * Prints the welcome banner and initial greetings with personality based on task count.
+     *
+     * @param totalTasks Current total number of tasks.
+     */
+    public void showWelcome(int totalTasks) {
+        output(PersonalityManager.getGreetingPhrase(totalTasks));
+        output("What can I do for you?");
+    }
+
+    /**
+     * Prints the welcome banner and initial greetings for an empty list.
      */
     public void showWelcome() {
-        output("Hello! I'm Bobo.");
-        output("What can I do for you?");
+        showWelcome(0);
     }
 
     /**
@@ -108,7 +117,7 @@ public class Ui {
      * @param totalTasks Current total number of tasks.
      */
     public void showTaskAdded(Task task, int totalTasks) {
-        output("Got it. I've added this task:");
+        output(PersonalityManager.getTaskAddedPhrase(totalTasks));
         output("  " + task);
         output("Now you have " + totalTasks + " tasks in the list.");
     }
@@ -120,7 +129,7 @@ public class Ui {
      * @param totalTasks Remaining total number of tasks.
      */
     public void showTaskRemoved(Task task, int totalTasks) {
-        output("Noted. I've removed this task:");
+        output(PersonalityManager.getTaskRemovedPhrase(totalTasks));
         output("  " + task);
         output("Now you have " + totalTasks + " tasks in the list.");
     }
@@ -146,7 +155,8 @@ public class Ui {
      * @param taskList The TaskList instance to display.
      */
     public void showTaskList(TaskList taskList) {
-        printTaskList(taskList.getTasks(), "Here are the tasks in your list:", "Your task list is currently empty.");
+        String emptyMsg = PersonalityManager.getEmptyListPhrase(taskList.size());
+        printTaskList(taskList.getTasks(), "Here are the tasks in your list:", emptyMsg);
     }
 
     /**

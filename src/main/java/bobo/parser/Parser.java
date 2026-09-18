@@ -178,7 +178,7 @@ public class Parser {
         assert task != null : "Created Todo task must not be null";
         tasks.add(task);
         storage.save(tasks);
-        ui.showMessage("added: " + trimmedText);
+        ui.showTaskAdded(task, tasks.size());
     }
 
     private static void addAndSaveTask(Task task, TaskList tasks, Ui ui, Storage storage) throws BoboException {
