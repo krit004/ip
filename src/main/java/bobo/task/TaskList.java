@@ -3,6 +3,7 @@ package bobo.task;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import bobo.exception.BoboException;
 
@@ -103,16 +104,12 @@ public class TaskList {
      * @return List of tasks occurring on targetDate.
      */
     public List<Task> getTasksOnDate(LocalDate targetDate) {
-        List<Task> matchingTasks = new ArrayList<>();
         if (targetDate == null) {
-            return matchingTasks;
+            return new ArrayList<>();
         }
-        for (Task task : tasks) {
-            if (task.isOnDate(targetDate)) {
-                matchingTasks.add(task);
-            }
-        }
-        return matchingTasks;
+        return tasks.stream()
+                .filter(task -> task.isOnDate(targetDate))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -122,17 +119,13 @@ public class TaskList {
      * @return List of matching tasks.
      */
     public List<Task> findTasks(String keyword) {
-        List<Task> matchingTasks = new ArrayList<>();
         if (keyword == null || keyword.trim().isEmpty()) {
-            return matchingTasks;
+            return new ArrayList<>();
         }
         String lowerKeyword = keyword.trim().toLowerCase();
-        for (Task task : tasks) {
-            if (task.getDescription().toLowerCase().contains(lowerKeyword)) {
-                matchingTasks.add(task);
-            }
-        }
-        return matchingTasks;
+        return tasks.stream()
+                .filter(task -> task.getDescription().toLowerCase().contains(lowerKeyword))
+                .collect(Collectors.toList());
     }
 
     /**

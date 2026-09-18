@@ -3,6 +3,7 @@ package bobo.ui;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 import bobo.task.Task;
 import bobo.task.TaskList;
@@ -176,9 +177,8 @@ public class Ui {
             return;
         }
         output(headerMessage);
-        for (int i = 0; i < tasks.size(); i++) {
-            output((i + 1) + "." + tasks.get(i));
-        }
+        IntStream.range(0, tasks.size())
+                .forEach(i -> output((i + 1) + "." + tasks.get(i)));
     }
 
     /**
