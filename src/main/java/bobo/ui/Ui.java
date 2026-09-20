@@ -28,7 +28,6 @@ public class Ui {
 
     private void output(String text) {
         responseBuffer.append(text).append("\n");
-        System.out.println("     " + text);
     }
 
     /**
@@ -50,18 +49,6 @@ public class Ui {
     }
 
     /**
-     * Reads a command line from the user.
-     *
-     * @return Raw command string input.
-     */
-    public String readCommand() {
-        if (scanner.hasNextLine()) {
-            return scanner.nextLine();
-        }
-        return "bye";
-    }
-
-    /**
      * Prints the welcome banner and initial greetings with personality based on task count.
      *
      * @param totalTasks Current total number of tasks.
@@ -78,12 +65,6 @@ public class Ui {
         showWelcome(0);
     }
 
-    /**
-     * Prints a decorative divider line.
-     */
-    public void showLine() {
-        System.out.println(DIVIDER_LINE);
-    }
 
     /**
      * Displays a loading error message when file loading fails.

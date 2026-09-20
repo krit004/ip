@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,18 +16,18 @@ public class DateUtil {
 
     /** Formatter list for date-time inputs with time components. */
     private static final List<DateTimeFormatter> DATE_TIME_FORMATTERS = Arrays.asList(
-            DateTimeFormatter.ofPattern("d/M/yyyy HHmm"),
-            DateTimeFormatter.ofPattern("d/M/yyyy HH:mm"),
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"),
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"),
-            DateTimeFormatter.ofPattern("yyyy/MM/dd HHmm"),
-            DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
+            DateTimeFormatter.ofPattern("d/M/uuuu HHmm").withResolverStyle(ResolverStyle.STRICT),
+            DateTimeFormatter.ofPattern("d/M/uuuu HH:mm").withResolverStyle(ResolverStyle.STRICT),
+            DateTimeFormatter.ofPattern("uuuu-MM-dd HHmm").withResolverStyle(ResolverStyle.STRICT),
+            DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm").withResolverStyle(ResolverStyle.STRICT),
+            DateTimeFormatter.ofPattern("uuuu/MM/dd HHmm").withResolverStyle(ResolverStyle.STRICT),
+            DateTimeFormatter.ofPattern("uuuu/MM/dd HH:mm").withResolverStyle(ResolverStyle.STRICT));
 
     /** Formatter list for date-only inputs. */
     private static final List<DateTimeFormatter> DATE_FORMATTERS = Arrays.asList(
-            DateTimeFormatter.ofPattern("yyyy-MM-dd"),
-            DateTimeFormatter.ofPattern("d/M/yyyy"),
-            DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+            DateTimeFormatter.ofPattern("uuuu-MM-dd").withResolverStyle(ResolverStyle.STRICT),
+            DateTimeFormatter.ofPattern("d/M/uuuu").withResolverStyle(ResolverStyle.STRICT),
+            DateTimeFormatter.ofPattern("uuuu/MM/dd").withResolverStyle(ResolverStyle.STRICT));
 
     /** Formatter for displaying LocalDateTime to user. */
     private static final DateTimeFormatter DISPLAY_DATETIME_FORMATTER = DateTimeFormatter

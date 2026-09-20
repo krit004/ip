@@ -1,6 +1,7 @@
 # Bobo - User Guide
 
 Bobo is a lightweight, interactive desktop task management chatbot that helps you organize your daily tasks, deadlines, and events with an evolving dynamic personality!
+It was created with the help of Gemini 3.6 Flash.
 
 ![Bobo User Interface](Ui.png)
 
@@ -9,10 +10,13 @@ Bobo is a lightweight, interactive desktop task management chatbot that helps yo
 ## Quick Start
 
 1. **Prerequisites**: Ensure you have **Java 17** or higher installed on your computer.
-2. **Download / Clone**: Open a terminal in the project directory.
+2. **Download**: Download the `bobo.jar` executable file into a folder of your choice.
 3. **Launch the Application**:
-   - On Windows: Run `.\gradlew.bat run`
-   - On macOS/Linux: Run `./gradlew run`
+   - Open a terminal or command prompt in the folder containing `bobo.jar`.
+   - Run the following command:
+     ```bash
+     java -jar bobo.jar
+     ```
 4. **Interact**: Type any command into the text box at the bottom of the window and press **Enter** (or click **Send**).
 
 ---
