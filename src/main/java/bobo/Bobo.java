@@ -82,32 +82,4 @@ public class Bobo {
         ui.showWelcome(tasks != null ? tasks.size() : 0);
         return ui.getResponseBuffer();
     }
-
-    /**
-     * Runs the main interactive CLI loop for Bobo.
-     */
-    public void run() {
-        ui.showWelcome(tasks != null ? tasks.size() : 0);
-        boolean isExitCli = false;
-        while (!isExitCli) {
-            try {
-                String fullCommand = ui.readCommand();
-                ui.showLine();
-                isExitCli = Parser.executeCommand(fullCommand, tasks, ui, storage);
-            } catch (BoboException e) {
-                ui.showError(e.getMessage());
-            } finally {
-                ui.showLine();
-            }
-        }
-    }
-
-    /**
-     * Main entry point of the Bobo CLI application.
-     *
-     * @param args Command-line arguments.
-     */
-    public static void main(String[] args) {
-        new Bobo("store.txt").run();
-    }
 }

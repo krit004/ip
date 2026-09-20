@@ -48,21 +48,21 @@ public class Parser {
             ui.showHelp();
         } else if (trimmedText.equals("list")) {
             ui.showTaskList(tasks);
-        } else if (trimmedText.startsWith("unmark")) {
-            executeToggleMark(trimmedText.substring(6).trim(), "unmark", false, tasks, ui, storage);
-        } else if (trimmedText.startsWith("mark")) {
-            executeToggleMark(trimmedText.substring(4).trim(), "mark", true, tasks, ui, storage);
-        } else if (trimmedText.startsWith("todo")) {
+        } else if (trimmedText.equals("unmark") || trimmedText.startsWith("unmark ")) {
+            executeToggleMark(getArg(trimmedText, 6), "unmark", false, tasks, ui, storage);
+        } else if (trimmedText.equals("mark") || trimmedText.startsWith("mark ")) {
+            executeToggleMark(getArg(trimmedText, 4), "mark", true, tasks, ui, storage);
+        } else if (trimmedText.equals("todo") || trimmedText.startsWith("todo ")) {
             executeTodo(trimmedText, tasks, ui, storage);
-        } else if (trimmedText.startsWith("deadline")) {
+        } else if (trimmedText.equals("deadline") || trimmedText.startsWith("deadline ")) {
             executeDeadline(trimmedText, tasks, ui, storage);
-        } else if (trimmedText.startsWith("event")) {
+        } else if (trimmedText.equals("event") || trimmedText.startsWith("event ")) {
             executeEvent(trimmedText, tasks, ui, storage);
-        } else if (trimmedText.startsWith("delete")) {
+        } else if (trimmedText.equals("delete") || trimmedText.startsWith("delete ")) {
             executeDelete(trimmedText, tasks, ui, storage);
-        } else if (trimmedText.startsWith("on ")) {
+        } else if (trimmedText.equals("on") || trimmedText.startsWith("on ")) {
             executeOnDate(trimmedText, tasks, ui);
-        } else if (trimmedText.startsWith("find")) {
+        } else if (trimmedText.equals("find") || trimmedText.startsWith("find ")) {
             executeFind(trimmedText, tasks, ui);
         } else {
             throw new BoboException("OOPS!!! I'm sorry, but I don't know what that means :-(\n"
@@ -70,6 +70,10 @@ public class Parser {
         }
 
         return false;
+    }
+
+    private static String getArg(String text, int prefixLength) {
+        return text.length() > prefixLength ? text.substring(prefixLength).trim() : "";
     }
 
     private static void executeToggleMark(String arg, String commandName, boolean isDone,
@@ -83,7 +87,7 @@ public class Parser {
 
     private static void executeTodo(String trimmedText, TaskList tasks, Ui ui, Storage storage)
             throws BoboException {
-        String description = trimmedText.length() > 4 ? trimmedText.substring(4).trim() : "";
+        String description = getArg(trimmedText, 4);
         if (description.isEmpty()) {
             throw new BoboException("OOPS!!! The description of a todo cannot be empty.");
         }
@@ -93,16 +97,27 @@ public class Parser {
 
     private static void executeDeadline(String trimmedText, TaskList tasks, Ui ui, Storage storage)
             throws BoboException {
-        String content = trimmedText.length() > 8 ? trimmedText.substring(8).trim() : "";
+        String content = getArg(trimmedText, 8);
+        if (content.isEmpty()) {
+            throw new BoboException("OOPS!!! The description of a deadline cannot be empty.");
+        }
+
         String[] parts = content.split(" /by ", 2);
         String description = parts[0].trim();
         String by = parts.length > 1 ? parts[1].trim() : "";
 
+        if (parts.length < 2 || by.isEmpty()) {
+            if (content.contains("/by")) {
+                throw new BoboException("OOPS!!! Please format the deadline with spaces around '/by' "
+                        + "(e.g., /by 2026-09-30).");
+            }
+            throw new BoboException("OOPS!!! The deadline of a deadline cannot be empty.");
+        }
         if (description.isEmpty()) {
             throw new BoboException("OOPS!!! The description of a deadline cannot be empty.");
         }
-        if (by.isEmpty()) {
-            throw new BoboException("OOPS!!! The deadline of a deadline cannot be empty.");
+        if (DateUtil.parseDateTimeOrDate(by) == null) {
+            throw new BoboException("OOPS!!! Please specify a valid date (e.g., yyyy-MM-dd or d/M/yyyy).");
         }
 
         Task task = new Deadline(description, by);
@@ -111,7 +126,11 @@ public class Parser {
 
     private static void executeEvent(String trimmedText, TaskList tasks, Ui ui, Storage storage)
             throws BoboException {
-        String content = trimmedText.length() > 5 ? trimmedText.substring(5).trim() : "";
+        String content = getArg(trimmedText, 5);
+        if (content.isEmpty()) {
+            throw new BoboException("OOPS!!! The description of an event cannot be empty.");
+        }
+
         String[] parts = content.split(" /from ", 2);
         String description = parts[0].trim();
         String from = "";
@@ -125,11 +144,25 @@ public class Parser {
         if (description.isEmpty()) {
             throw new BoboException("OOPS!!! The description of an event cannot be empty.");
         }
-        if (from.isEmpty()) {
+        if (parts.length < 2 || from.isEmpty()) {
+            if (content.contains("/from")) {
+                throw new BoboException("OOPS!!! Please format the event with spaces around '/from' "
+                        + "(e.g., /from 2026-09-30 14:00).");
+            }
             throw new BoboException("OOPS!!! The from of an event cannot be empty.");
         }
         if (to.isEmpty()) {
+            if (content.contains("/to")) {
+                throw new BoboException("OOPS!!! Please format the event with spaces around '/to' "
+                        + "(e.g., /to 2026-09-30 16:00).");
+            }
             throw new BoboException("OOPS!!! The to of an event cannot be empty.");
+        }
+        if (DateUtil.parseDateTimeOrDate(from) == null) {
+            throw new BoboException("OOPS!!! Please specify a valid start date (e.g., yyyy-MM-dd or d/M/yyyy).");
+        }
+        if (DateUtil.parseDateTimeOrDate(to) == null) {
+            throw new BoboException("OOPS!!! Please specify a valid end date (e.g., yyyy-MM-dd or d/M/yyyy).");
         }
 
         Task task = new Event(description, from, to);
@@ -138,7 +171,7 @@ public class Parser {
 
     private static void executeDelete(String trimmedText, TaskList tasks, Ui ui, Storage storage)
             throws BoboException {
-        String arg = trimmedText.substring(6).trim();
+        String arg = getArg(trimmedText, 6);
         int number = parseTaskIndex(arg, "delete");
         Task task = tasks.delete(number);
         assert task != null : "Deleted task must not be null";
@@ -147,7 +180,7 @@ public class Parser {
     }
 
     private static void executeOnDate(String trimmedText, TaskList tasks, Ui ui) throws BoboException {
-        String dateStr = trimmedText.substring(3).trim();
+        String dateStr = getArg(trimmedText, 2);
         LocalDate targetDate = DateUtil.parseDate(dateStr);
         if (targetDate == null) {
             LocalDateTime dt = DateUtil.parseDateTime(dateStr);
@@ -164,7 +197,7 @@ public class Parser {
     }
 
     private static void executeFind(String trimmedText, TaskList tasks, Ui ui) throws BoboException {
-        String keyword = trimmedText.length() > 4 ? trimmedText.substring(4).trim() : "";
+        String keyword = getArg(trimmedText, 4);
         if (keyword.isEmpty()) {
             throw new BoboException("OOPS!!! The search keyword for find cannot be empty.");
         }
