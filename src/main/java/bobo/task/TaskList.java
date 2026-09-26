@@ -62,9 +62,7 @@ public class TaskList {
      * @throws BoboException If index is out of bounds.
      */
     public Task mark(int index) throws BoboException {
-        validateIndex(index);
-        assert index > 0 && index <= tasks.size() : "Task index must be within bounds after validation";
-        Task task = tasks.get(index - 1);
+        Task task = get(index);
         task.markAsDone();
         return task;
     }
@@ -77,9 +75,7 @@ public class TaskList {
      * @throws BoboException If index is out of bounds.
      */
     public Task unmark(int index) throws BoboException {
-        validateIndex(index);
-        assert index > 0 && index <= tasks.size() : "Task index must be within bounds after validation";
-        Task task = tasks.get(index - 1);
+        Task task = get(index);
         task.markAsNotDone();
         return task;
     }
