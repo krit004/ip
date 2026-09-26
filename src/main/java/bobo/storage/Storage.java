@@ -93,22 +93,29 @@ public class Storage {
         boolean isDone = pieces.length > 1 && pieces[1].equals("1");
 
         Task task = null;
-        if (type.equals("T")) {
+        switch (type) {
+        case "T":
             if (pieces.length > 2) {
                 task = new Todo(pieces[2]);
             }
-        } else if (type.equals("D")) {
+            break;
+        case "D":
             if (pieces.length > 3) {
                 task = new Deadline(pieces[2], pieces[3]);
             }
-        } else if (type.equals("E")) {
+            break;
+        case "E":
             if (pieces.length > 4) {
                 task = new Event(pieces[2], pieces[3], pieces[4]);
             }
-        } else if (type.equals("Task")) {
+            break;
+        case "Task":
             if (pieces.length > 2) {
                 task = new Task(pieces[2]);
             }
+            break;
+        default:
+            break;
         }
 
         if (task != null && isDone) {
