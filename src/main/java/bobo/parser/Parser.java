@@ -48,21 +48,21 @@ public class Parser {
             ui.showHelp();
         } else if (trimmedText.equals("list")) {
             ui.showTaskList(tasks);
-        } else if (trimmedText.equals("unmark") || trimmedText.startsWith("unmark ")) {
+        } else if (isCommand(trimmedText, "unmark")) {
             executeToggleMark(getArg(trimmedText, 6), "unmark", false, tasks, ui, storage);
-        } else if (trimmedText.equals("mark") || trimmedText.startsWith("mark ")) {
+        } else if (isCommand(trimmedText, "mark")) {
             executeToggleMark(getArg(trimmedText, 4), "mark", true, tasks, ui, storage);
-        } else if (trimmedText.equals("todo") || trimmedText.startsWith("todo ")) {
+        } else if (isCommand(trimmedText, "todo")) {
             executeTodo(trimmedText, tasks, ui, storage);
-        } else if (trimmedText.equals("deadline") || trimmedText.startsWith("deadline ")) {
+        } else if (isCommand(trimmedText, "deadline")) {
             executeDeadline(trimmedText, tasks, ui, storage);
-        } else if (trimmedText.equals("event") || trimmedText.startsWith("event ")) {
+        } else if (isCommand(trimmedText, "event")) {
             executeEvent(trimmedText, tasks, ui, storage);
-        } else if (trimmedText.equals("delete") || trimmedText.startsWith("delete ")) {
+        } else if (isCommand(trimmedText, "delete")) {
             executeDelete(trimmedText, tasks, ui, storage);
-        } else if (trimmedText.equals("on") || trimmedText.startsWith("on ")) {
+        } else if (isCommand(trimmedText, "on")) {
             executeOnDate(trimmedText, tasks, ui);
-        } else if (trimmedText.equals("find") || trimmedText.startsWith("find ")) {
+        } else if (isCommand(trimmedText, "find")) {
             executeFind(trimmedText, tasks, ui);
         } else {
             throw new BoboException("OOPS!!! I'm sorry, but I don't know what that means :-(\n"
@@ -70,6 +70,10 @@ public class Parser {
         }
 
         return false;
+    }
+
+    private static boolean isCommand(String text, String command) {
+        return text.equals(command) || text.startsWith(command + " ");
     }
 
     private static String getArg(String text, int prefixLength) {
