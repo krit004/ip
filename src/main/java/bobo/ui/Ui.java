@@ -97,10 +97,20 @@ public class Ui {
      * @param task       The added task.
      * @param totalTasks Current total number of tasks.
      */
-    public void showTaskAdded(Task task, int totalTasks) {
-        output(PersonalityManager.getTaskAddedPhrase(totalTasks));
+    private void showTaskChangeResponse(String statusPhrase, Task task, int totalTasks) {
+        output(statusPhrase);
         output("  " + task);
         output("Now you have " + totalTasks + " tasks in the list.");
+    }
+
+    /**
+     * Displays confirmation after adding a task.
+     *
+     * @param task       The added task.
+     * @param totalTasks Current total number of tasks.
+     */
+    public void showTaskAdded(Task task, int totalTasks) {
+        showTaskChangeResponse(PersonalityManager.getTaskAddedPhrase(totalTasks), task, totalTasks);
     }
 
     /**
@@ -110,9 +120,7 @@ public class Ui {
      * @param totalTasks Remaining total number of tasks.
      */
     public void showTaskRemoved(Task task, int totalTasks) {
-        output(PersonalityManager.getTaskRemovedPhrase(totalTasks));
-        output("  " + task);
-        output("Now you have " + totalTasks + " tasks in the list.");
+        showTaskChangeResponse(PersonalityManager.getTaskRemovedPhrase(totalTasks), task, totalTasks);
     }
 
     /**
