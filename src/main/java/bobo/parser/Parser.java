@@ -185,13 +185,9 @@ public class Parser {
 
     private static void executeOnDate(String trimmedText, TaskList tasks, Ui ui) throws BoboException {
         String dateStr = getArg(trimmedText, 2);
-        LocalDate targetDate = DateUtil.parseDate(dateStr);
-        if (targetDate == null) {
-            LocalDateTime dt = DateUtil.parseDateTime(dateStr);
-            if (dt != null) {
-                targetDate = dt.toLocalDate();
-            }
-        }
+        Object parsed = DateUtil.parseDateTimeOrDate(dateStr);
+        LocalDate targetDate = (parsed instanceof LocalDateTime) ? ((LocalDateTime) parsed).toLocalDate()
+                : (parsed instanceof LocalDate) ? (LocalDate) parsed : null;
         if (targetDate == null) {
             throw new BoboException("Please specify a valid date (e.g., yyyy-MM-dd or d/M/yyyy).");
         }
